@@ -550,6 +550,28 @@
         if (input.disabled) return;
         try { input.focus({ preventScroll: true }); } catch (e) { input.focus(); }
     }
+    // Keep the prompt visible above the mobile on-screen keyboard. On iOS the
+    // keyboard overlays the layout viewport without resizing it, so a fixed
+    // bottom:0 panel gets covered. We lift the panel by the keyboard height and
+    // clamp it to the visible (visual) viewport so the input stays in view.
+    function syncKeyboard() {
+        var vv = window.visualViewport;
+        if (!vv) return;
+        if (!panel.classList.contains("open")) {
+            panel.style.bottom = "";
+            panel.style.maxHeight = "";
+            return;
+        }
+        var kb = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+        if (kb > 80) {
+            panel.style.bottom = kb + "px";
+            panel.style.maxHeight = vv.height + "px";
+        } else {
+            panel.style.bottom = "";
+            panel.style.maxHeight = "";
+        }
+        screen.scrollTop = screen.scrollHeight;
+    }
     function openPanel() {
         if (!state.opened) {
             state.opened = true;
@@ -562,11 +584,14 @@
         refreshPS1();
         focusInput();
         setTimeout(focusInput, 60);
+        setTimeout(syncKeyboard, 150); // catch the keyboard once it animates in
     }
     function closePanel() {
         panel.classList.remove("open");
         bar.style.opacity = "";
         bar.style.pointerEvents = "";
+        panel.style.bottom = "";
+        panel.style.maxHeight = "";
         if (nano.classList.contains("open")) closeNano();
         // If it was collapsed by shrinking, restore a sensible height for next open.
         if (state.panelHeight < 240) state.panelHeight = Math.round(window.innerHeight * 0.7);
@@ -666,6 +691,11 @@
     window.addEventListener("resize", function () {
         if (panel.classList.contains("open")) setHeight(state.panelHeight);
     });
+    // Track the on-screen keyboard (mobile) so the prompt is never covered.
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener("resize", syncKeyboard);
+        window.visualViewport.addEventListener("scroll", syncKeyboard);
+    }
 
     // ---- boot ---------------------------------------------------------------
     Promise.all([
