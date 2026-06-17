@@ -31,11 +31,18 @@
     box-sizing: border-box;
 }
 
+html {
+    /* Guard against any element forcing the page wider than the screen, which
+       makes mobile browsers shrink-to-fit and show stray scrollbars. */
+    overflow-x: hidden;
+}
+
 body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
     font-family: var(--font-serif);
     line-height: 1.65;
+    overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -205,15 +212,20 @@ body {
     font-family: inherit;
     text-align: left;
     cursor: pointer;
+    flex-wrap: wrap; /* hint drops below the address on narrow screens */
+    min-width: 0;
 }
 
 .email-address {
     font-family: var(--font-mono);
     font-size: 0.95rem;
     color: var(--text-primary);
+    min-width: 0;
+    overflow-wrap: anywhere; /* wrap rather than push the page wider than the screen */
 }
 
 .email-hint {
+    flex: 0 0 auto;
     font-size: 0.8rem;
     font-style: italic;
     color: var(--text-muted);

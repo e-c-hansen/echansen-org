@@ -579,6 +579,7 @@
             panel.style.paddingBottom = "";
             nano.style.bottom = "";
             backdrop.classList.add("show");
+            if (document.documentElement) document.documentElement.classList.add("term-kbd-open");
         } else {
             clearKeyboard();
         }
@@ -591,6 +592,7 @@
         panel.style.height = panel.classList.contains("open") ? state.panelHeight + "px" : "";
         nano.style.bottom = "";
         backdrop.classList.remove("show");
+        if (document.documentElement) document.documentElement.classList.remove("term-kbd-open");
     }
     function openPanel() {
         if (!state.opened) {

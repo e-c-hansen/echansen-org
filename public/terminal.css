@@ -67,6 +67,15 @@
     display: block;
 }
 
+/* While the mobile keyboard is open, paint the page's own background dark. The
+   body always fills the whole screen (including behind the keyboard, where iOS
+   renders the page through the gaps in its floating toolbar), so this is what
+   reliably kills the light peek-through — fixed-position layers don't reach
+   behind the keyboard on iOS. */
+html.term-kbd-open body {
+    background-color: var(--term-bg);
+}
+
 /* ---- The terminal panel itself ---- */
 .term-panel {
     position: fixed;
