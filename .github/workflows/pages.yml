@@ -33,6 +33,10 @@ jobs:
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
+        with:
+          # Auto-enable Pages (Actions source) so a fresh repo's first run
+          # doesn't fail before Pages has been turned on manually.
+          enablement: true
 
       - name: Upload public/ as the Pages artifact
         uses: actions/upload-pages-artifact@v3
