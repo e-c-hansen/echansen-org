@@ -52,6 +52,21 @@
     color: var(--term-dim);
 }
 
+/* Dark fill shown behind the panel while the on-screen keyboard is up, so the
+   light page never peeks through (e.g. gaps in iOS's floating keyboard toolbar).
+   Sits below the panel; only visible in regions the panel doesn't cover. */
+.term-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 8999;
+    background: var(--term-bg);
+    display: none;
+}
+
+.term-backdrop.show {
+    display: block;
+}
+
 /* ---- The terminal panel itself ---- */
 .term-panel {
     position: fixed;

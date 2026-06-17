@@ -90,7 +90,13 @@
     panel.appendChild(status);
     panel.appendChild(nano);
 
+    // Full-screen dark layer shown behind the panel while the mobile keyboard is
+    // up, so any area not covered by the panel (e.g. behind iOS's floating
+    // keyboard toolbar) reads as dark instead of the light page underneath.
+    var backdrop = el("div", "term-backdrop");
+
     function mount() {
+        document.body.appendChild(backdrop);
         document.body.appendChild(bar);
         document.body.appendChild(panel);
     }
@@ -572,6 +578,7 @@
             panel.style.maxHeight = "none";
             panel.style.paddingBottom = kb + "px";
             nano.style.bottom = kb + "px"; // lift the nano overlay's keys too
+            backdrop.classList.add("show"); // dark fill behind everything
         } else {
             clearKeyboard();
         }
@@ -583,6 +590,7 @@
         panel.style.paddingBottom = "";
         panel.style.height = panel.classList.contains("open") ? state.panelHeight + "px" : "";
         nano.style.bottom = "";
+        backdrop.classList.remove("show");
     }
     function openPanel() {
         if (!state.opened) {
