@@ -569,16 +569,16 @@
         }
         var kb = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
         if (kb > 80) {
-            // Keep the dark panel anchored to the bottom so it extends BEHIND the
-            // keyboard, and pad the content up by the keyboard height so the prompt
-            // stays above the keys. This way the gaps in iOS's floating keyboard
-            // toolbar reveal the terminal's dark background, not the light page.
-            panel.style.bottom = "0px";
-            panel.style.height = (vv.height + kb) + "px";
-            panel.style.maxHeight = "none";
-            panel.style.paddingBottom = kb + "px";
-            nano.style.bottom = kb + "px"; // lift the nano overlay's keys too
-            backdrop.classList.add("show"); // dark fill behind everything
+            // Lift the whole panel to sit ABOVE the keyboard so the prompt stays
+            // visible, and clamp it to the visible viewport height. The full-screen
+            // dark backdrop (below) covers the keyboard region so no light page
+            // shows through the gaps in iOS's floating keyboard toolbar.
+            panel.style.bottom = kb + "px";
+            panel.style.height = vv.height + "px";
+            panel.style.maxHeight = vv.height + "px";
+            panel.style.paddingBottom = "";
+            nano.style.bottom = "";
+            backdrop.classList.add("show");
         } else {
             clearKeyboard();
         }
