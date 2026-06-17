@@ -1,0 +1,9 @@
+# Compiled C++ server binary (build it with setup_pi.sh / g++)
+/server
+*.o
+
+# OS / editor cruft
+.DS_Store
+
+# Local logs
+*.log

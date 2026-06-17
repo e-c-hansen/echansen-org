@@ -1,0 +1,98 @@
+\documentclass{resume} % Use the custom resume.cls style
+
+\usepackage[left=0.75in,top=0.6in,right=0.75in,bottom=0.6in]{geometry} % Document margins
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\graphicspath{ {./} }
+
+
+\newcommand{\itab}[1]{\hspace{0em}\rlap{#1}}
+
+\begin{document}
+
+\Large Eric Hansen \hfill \normalsize eric.calvin.hansen@gmail.com
+\break
+\normalsize Brooklyn, New York 11215 \hfill +1-480-298-2839 \break
+\vspace*{-\baselineskip}
+
+\begin{rSection}{Overall}
+\normalfont Research Engineer with 5+ years of experience with LLMs, scoring/retrieval models, and ML infra. I have worked on most relevant facets of ML at scale, from pretraining LLMs to building petabyte-scale data pipelines. I am broadly interested in solving complex problems with ML.
+
+\end{rSection}
+
+\begin{rSection}{Work Experience}
+
+\makebox[9em][l]{\href{https://en.wikipedia.org/wiki/Google_DeepMind}{\includegraphics[scale=0.1]{GDM.png}}}
+{\raisebox{0.5em}{Google Deepmind}}
+\hfill {\raisebox{0.5em}{\normalfont{November 2025 - Present}}}
+\newline
+{\it{Senior Research Engineer}}
+
+\begin{itemize}
+
+\item \normalfont{Adversarial post-training of agentic Gemini workflows.}
+
+\end{itemize}
+
+\makebox[9em][l]{\href{ https://en.wikipedia.org/wiki/Google} {{\includegraphics[scale=0.1]{Google.png}}}}
+{\raisebox{0.5em}{Google Search}}
+\hfill {\raisebox{0.5em}{{\normalfont{July 2022 - November 2025}}}}
+\newline
+{\it{Senior Software Engineer}}
+\begin{itemize}
+
+\item \normalfont{Pretrained and fine-tuned LLMs for the ``AI Overviews" feature, achieving state-of-the-art performance by improving tokenization and training data mixtures.}
+
+\item \normalfont{Engineered a regulation-compliant, petabyte-scale data store and pipeline, feeding the most active ML models in Google Search and supporting nearly 100\% of all searches.}
+
+\item \normalfont{Built an automated end-to-end pipeline for data generation, training, and evaluation for a critical Search Ranking model, reducing model refresh cycles from 6-12 months to monthly.}
+
+\end{itemize}
+{\makebox[9em][l]{\includegraphics[scale=0.2]{Lam.png}}
+{\raisebox{0.5em}{Lam Research}}
+\hfill {\raisebox{0.5em}{{\normalfont January 2020 - June 2022}}}}
+\begin{itemize}
+
+\item \normalfont{Invented/patented a physics-based analytical model for predicting EUV lithography ``printing" (\href{https://www.spiedigitallibrary.org/journals/journal-of-micro-nanopatterning-materials-and-metrology/volume-21/issue-4/041405/Analytical-approach-to-metal-oxide-resist-modeling--exposure-bake/10.1117/1.JMM.21.4.041405.short}{paper}), reducing 6+ hour simulations to seconds. \it{10+ related patents.}}
+
+\item \normalfont{Founded and led the development of the aforementioned simulation product, including a SOTA image analysis package that rivaled competitor offerings.}
+
+\end{itemize}
+\end{rSection}
+
+\begin{rSection}{Education}
+\makebox[9em][l]{\href{ https://en.wikipedia.org/wiki/Google} {{\includegraphics[scale=0.07]{MIT.png}}}}
+{\raisebox{0.5em}{MIT}}
+\hfill {\raisebox{0.5em}{{\normalfont{August 2014 - December 2019}}}}
+\newline
+{
+\it{PhD \normalfont(Chemistry)}
+- \normalfont{\href{https://scholar.google.com/citations?user=jq4WE7IAAAAJ&hl=en}{Google Scholar}}
+}
+\newline
+% \begin{itemize}
+    \fontsize{10}{12}\selectfont {{\normalfont Semiconductor and magnetic nanocrystal research.}}
+    \newline
+    \fontsize{9}{11}\selectfont {
+    \it{Research from before my time earned my advisor the \href{https://www.nobelprize.org/prizes/chemistry/2023/bawendi/facts/}{2023 Nobel Prize in Chemistry.}}}
+% \end{itemize}
+
+{\bf{University of Arizona} \it{BS \normalfont(Chemistry, Mathematics)} \hfill {\em 2010 - 2014} }
+
+\end{rSection}
+
+\begin{rSection}{Skills}
+
+{\bf{Languages}: \normalfont{Python*, C++*, SQL, Bash}}
+{\normalfont{\fontsize{10}{12}\selectfont * = indicates I have been granted Google ``readability".}}
+
+{\bf{ML \& Data Science}: \normalfont {JAX, Flax, PyTorch, LibTorch ({\it{C++ PyTorch}}), TensorFlow, Pandas, NumPy}}
+
+{\bf{Distributed Data Pipelines}: \normalfont {Apache Beam, Apache Flume, Borg}}
+
+\end{rSection}
+
+\end{document}

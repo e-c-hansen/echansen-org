@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eric Hansen | Viewer</title>
+    <meta name="description" content="Rendered Markdown document.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="terminal.css">
+</head>
+
+<body>
+    <main class="container container-detail">
+        <nav class="back-nav">
+            <a href="index.html" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Back</span>
+            </a>
+        </nav>
+
+        <article id="doc" class="markdown-body">
+            <p style="color: var(--text-muted);">Loading…</p>
+        </article>
+
+        <footer class="footer">
+            <p class="footer-text">&copy; 2026 Eric Hansen</p>
+        </footer>
+    </main>
+
+    <script src="vendor/marked.min.js"></script>
+    <script>
+        // Generic Markdown viewer: /view.html?f=/posts/welcome.md
+        // The `f` param is constrained to same-origin absolute paths to avoid
+        // turning this into an open fetch proxy.
+        (function () {
+            const doc = document.getElementById('doc');
+            const params = new URLSearchParams(location.search);
+            let f = params.get('f') || '';
+
+            // Accept same-origin relative or root-absolute .md paths; refuse
+            // external URLs (scheme or protocol-relative) and path traversal.
+            if (!f || /^[a-z][a-z0-9+.-]*:/i.test(f) || f.startsWith('//') ||
+                f.includes('..') || !/\.(md|markdown|txt)$/i.test(f)) {
+                doc.innerHTML = '<p style="color:#f43f5e;">Refusing to load "' +
+                    f.replace(/[<>&]/g, '') + '" — expected a same-origin .md path.</p>';
+                return;
+            }
+
+            fetch(f)
+                .then(r => { if (!r.ok) throw new Error(r.status + ' ' + r.statusText); return r.text(); })
+                .then(text => {
+                    document.title = 'Eric Hansen | ' + f.split('/').pop();
+                    marked.setOptions({ gfm: true, breaks: false });
+                    doc.innerHTML = marked.parse(text);
+                })
+                .catch(err => {
+                    doc.innerHTML = '<p style="color:#f43f5e;">Could not load <code>' +
+                        f.replace(/[<>&]/g, '') + '</code>: ' + err.message + '</p>';
+                });
+        })();
+    </script>
+    <script src="terminal.js" defer></script>
+</body>
+
+</html>

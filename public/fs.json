@@ -1,0 +1,44 @@
+{
+  "cwd": "/home/eric",
+  "tree": {
+    "name": "/",
+    "type": "dir",
+    "children": [
+      {
+        "name": "home",
+        "type": "dir",
+        "children": [
+          {
+            "name": "eric",
+            "type": "dir",
+            "children": [
+              { "name": "about.md", "type": "file", "src": "content/about.md" },
+              { "name": "resume.md", "type": "file", "src": "resume.md" },
+              { "name": "contact.md", "type": "file", "src": "content/contact.md" },
+              {
+                "name": "posts",
+                "type": "dir",
+                "live": true,
+                "base": "posts",
+                "children": [
+                  { "name": "welcome.md", "type": "file", "src": "posts/welcome.md" }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "www",
+        "type": "dir",
+        "children": [
+          { "name": "index.html", "type": "file", "src": "index.html" },
+          { "name": "resume.html", "type": "file", "src": "resume.html" },
+          { "name": "github.html", "type": "file", "src": "github.html" },
+          { "name": "style.css", "type": "file", "src": "style.css" }
+        ]
+      },
+      { "name": "README.md", "type": "file", "src": "content/readme.md" }
+    ]
+  }
+}

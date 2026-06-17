@@ -1,0 +1,44 @@
+name: Deploy static site to GitHub Pages
+
+# Publishes the contents of public/ to GitHub Pages. This is the SAME directory
+# the C++ server serves locally, so the site stays a single source of truth.
+# Dynamic features (the curl utility endpoints and the root-write terminal API)
+# require the C++ backend and are simply inert on Pages — the terminal detects
+# the missing backend and degrades to read-only.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment, cancelling in-progress runs.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload public/ as the Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

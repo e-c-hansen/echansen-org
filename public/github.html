@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eric Hansen | GitHub</title>
+    <meta name="description" content="Open source work and engineering focus of Eric Hansen.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="terminal.css">
+</head>
+
+<body>
+    <main class="container container-detail">
+        <!-- BACK NAV -->
+        <nav class="back-nav">
+            <a href="index.html" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Back</span>
+            </a>
+        </nav>
+
+        <!-- PAGE HEADER -->
+        <header class="page-header">
+            <h1 class="page-title">Code &amp; Systems</h1>
+            <p class="page-subtitle">Open-source focus and systems programming interests.</p>
+        </header>
+
+        <!-- INTRO -->
+        <section class="section">
+            <p class="page-intro">
+                Most of my day-to-day engineering lives in closed-source systems at Google DeepMind (and, earlier, Lam
+                Research). My public, open-source work lives under <a href="https://ible.ai" target="_blank"
+                    rel="noopener noreferrer">ible.ai</a> &mdash; a personal venture exploring what is newly possible
+                with language models.
+            </p>
+        </section>
+
+        <!-- PROJECTS SHOWCASE -->
+        <section class="section">
+            <h2 class="section-title">Selected Repositories</h2>
+            <div class="github-grid">
+
+                <a href="https://github.com/ible-ai/graphible" target="_blank" rel="noopener noreferrer"
+                    class="repo-card">
+                    <div class="repo-header">
+                        <span class="repo-name">graphible</span>
+                        <span class="repo-lang">JavaScript</span>
+                    </div>
+                    <p class="repo-desc">
+                        Turns any topic into an interactive learning graph: concepts become a navigable web of nodes
+                        that stream in live from a local LLM (Ollama), with feedback loops and saveable state. Live demo
+                        at ible-ai.github.io/graphible.
+                    </p>
+                </a>
+
+                <a href="https://github.com/ible-ai/adaptible" target="_blank" rel="noopener noreferrer"
+                    class="repo-card">
+                    <div class="repo-header">
+                        <span class="repo-name">adaptible</span>
+                        <span class="repo-lang">Python</span>
+                    </div>
+                    <p class="repo-desc">
+                        Wraps an LLM in a server that learns during idle time &mdash; it stores interactions, critiques
+                        and revises its own past answers, and fine-tunes on them with LoRA. An experiment in whether
+                        some instances "learn to learn" better than others.
+                    </p>
+                </a>
+
+                <a href="https://github.com/ible-ai/vizible" target="_blank" rel="noopener noreferrer"
+                    class="repo-card">
+                    <div class="repo-header">
+                        <span class="repo-name">vizible</span>
+                        <span class="repo-lang">Python</span>
+                    </div>
+                    <p class="repo-desc">
+                        Deterministic color-coded debugging for Python: <code>dprint()</code> gives every file-and-line
+                        its own stable color, so you can spot where log output is coming from at a glance. Zero config,
+                        minimal dependencies.
+                    </p>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- LINK -->
+        <section class="section" style="margin-top: 1rem;">
+            <a href="https://github.com/ible-ai" target="_blank" rel="noopener noreferrer" class="landing-nav-item"
+                style="display: inline-flex; width: auto;">
+                <span>Browse all repositories on GitHub</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2.5" style="margin-left: 0.75rem;">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+            </a>
+        </section>
+
+        <!-- STATIC UNDERSTATED FOOTER -->
+        <footer class="footer">
+            <p class="footer-text">&copy; 2026 Eric Hansen</p>
+        </footer>
+    </main>
+
+    <!-- Hidden terminal (pure client-side; works on the C++ server and on GitHub Pages) -->
+    <script src="vendor/marked.min.js"></script>
+    <script src="terminal.js" defer></script>
+</body>
+
+</html>

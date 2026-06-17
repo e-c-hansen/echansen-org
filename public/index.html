@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eric Hansen</title>
+    <meta name="description" content="Personal site of Eric Hansen, Senior Research Engineer at Google DeepMind.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="terminal.css">
+</head>
+
+<body>
+    <main class="container container-landing">
+        <!-- HERO BIO -->
+        <header class="landing-hero">
+            <h1 class="landing-title">Eric Hansen</h1>
+            <div class="landing-bio">
+                <span class="bio-key">Currently</span>
+                <span class="bio-val">breaking Gemini before you can <span class="bio-org">@ GDM</span></span>
+
+                <span class="bio-key">Previously</span>
+                <span class="bio-val">burning chips with EUV <span class="bio-org">@ Lam Research</span></span>
+
+                <span class="bio-key">Previously_2</span>
+                <span class="bio-val">growing crystals, MRI, and making my name three letters longer
+                    <span class="bio-org">@ MIT</span></span>
+            </div>
+        </header>
+
+        <!-- NAVIGATION LINKS -->
+        <nav class="landing-nav">
+            <a href="resume.html" class="landing-nav-item">
+                <span>Experience &amp; Skills</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </a>
+
+            <a href="github.html" class="landing-nav-item">
+                <span>GitHub Code</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </a>
+
+            <a href="https://scholar.google.com/citations?user=jq4WE7IAAAAJ" target="_blank" rel="noopener noreferrer"
+                class="landing-nav-item">
+                <span>Scholar Profile</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+            </a>
+
+            <button type="button" class="landing-nav-item landing-nav-button" id="email-copy"
+                data-email="eric.calvin.hansen@gmail.com" aria-label="Copy email address to clipboard">
+                <span class="email-address">eric.calvin.hansen@gmail.com</span>
+                <span class="email-hint" data-default="Click to copy">Click to copy</span>
+            </button>
+        </nav>
+
+        <!-- STATIC UNDERSTATED FOOTER -->
+        <footer class="footer">
+            <p class="footer-text">&copy; 2026 Eric Hansen</p>
+        </footer>
+    </main>
+
+    <!-- Copy-to-clipboard email button (no mailto: handoff) -->
+    <script>
+        (function () {
+            var btn = document.getElementById("email-copy");
+            if (!btn) return;
+            var hint = btn.querySelector(".email-hint");
+            var resetTimer = null;
+            btn.addEventListener("click", function () {
+                var email = btn.getAttribute("data-email");
+                var show = function (msg, ok) {
+                    hint.textContent = msg;
+                    btn.classList.toggle("copied", !!ok);
+                    clearTimeout(resetTimer);
+                    resetTimer = setTimeout(function () {
+                        hint.textContent = hint.getAttribute("data-default");
+                        btn.classList.remove("copied");
+                    }, 1800);
+                };
+                var fallback = function () {
+                    try {
+                        var ta = document.createElement("textarea");
+                        ta.value = email;
+                        ta.style.position = "fixed";
+                        ta.style.opacity = "0";
+                        document.body.appendChild(ta);
+                        ta.select();
+                        var ok = document.execCommand("copy");
+                        document.body.removeChild(ta);
+                        show(ok ? "Copied!" : email, ok);
+                    } catch (e) {
+                        show(email, false); // last resort: reveal it to select manually
+                    }
+                };
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(email).then(function () {
+                        show("Copied!", true);
+                    }, fallback);
+                } else {
+                    fallback();
+                }
+            });
+        })();
+    </script>
+
+    <!-- Hidden terminal (pure client-side; works on the C++ server and on GitHub Pages) -->
+    <script src="vendor/marked.min.js"></script>
+    <script src="terminal.js" defer></script>
+</body>
+
+</html>
