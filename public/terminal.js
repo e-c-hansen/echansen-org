@@ -558,19 +558,31 @@
         var vv = window.visualViewport;
         if (!vv) return;
         if (!panel.classList.contains("open")) {
-            panel.style.bottom = "";
-            panel.style.maxHeight = "";
+            clearKeyboard();
             return;
         }
         var kb = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
         if (kb > 80) {
-            panel.style.bottom = kb + "px";
-            panel.style.maxHeight = vv.height + "px";
+            // Keep the dark panel anchored to the bottom so it extends BEHIND the
+            // keyboard, and pad the content up by the keyboard height so the prompt
+            // stays above the keys. This way the gaps in iOS's floating keyboard
+            // toolbar reveal the terminal's dark background, not the light page.
+            panel.style.bottom = "0px";
+            panel.style.height = (vv.height + kb) + "px";
+            panel.style.maxHeight = "none";
+            panel.style.paddingBottom = kb + "px";
+            nano.style.bottom = kb + "px"; // lift the nano overlay's keys too
         } else {
-            panel.style.bottom = "";
-            panel.style.maxHeight = "";
+            clearKeyboard();
         }
         screen.scrollTop = screen.scrollHeight;
+    }
+    function clearKeyboard() {
+        panel.style.bottom = "";
+        panel.style.maxHeight = "";
+        panel.style.paddingBottom = "";
+        panel.style.height = panel.classList.contains("open") ? state.panelHeight + "px" : "";
+        nano.style.bottom = "";
     }
     function openPanel() {
         if (!state.opened) {
@@ -590,8 +602,7 @@
         panel.classList.remove("open");
         bar.style.opacity = "";
         bar.style.pointerEvents = "";
-        panel.style.bottom = "";
-        panel.style.maxHeight = "";
+        clearKeyboard();
         if (nano.classList.contains("open")) closeNano();
         // If it was collapsed by shrinking, restore a sensible height for next open.
         if (state.panelHeight < 240) state.panelHeight = Math.round(window.innerHeight * 0.7);

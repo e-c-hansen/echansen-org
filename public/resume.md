@@ -15,25 +15,25 @@ Research Engineer with 5+ years of experience with LLMs, scoring/retrieval model
 
 ### **Senior Research Engineer** | Google DeepMind
 *November 2025 – Present*
-- Engineered adversarial post-training for agentic Gemini workflows, hardening RL feedback loops and significantly enhancing task completion robustness.
+- Adversarial robustness in post-training. Breaking stuff so you can't.
 
 ### **Senior Software Engineer** | Google Search
 *July 2022 – November 2025*
-- Pretrained and fine-tuned LLMs powering the "AI Overviews" feature in core search queries.
+- Pretrained and fine-tuned large language models powering the "AI Overviews" feature in core search queries.
 - Developed a highly optimized, regulation-compliant petabyte-scale search data store feeding deep ranking models.
-- Built end-to-end model training, data generation, and automatic evaluation pipelines, shrinking refresh cycles from 6-12 months to monthly.
+- Built end-to-end model training, data generation, and automatic evaluation pipelines, shrinking model refresh cycles from 6-12 months to monthly.
 
-### **Lead Research Scientist** | Lam Research
+### **Engineer** | Lam Research
 *January 2020 – June 2022*
-- Patented a physics-based analytical metal oxide resist model predicting EUV lithography printing, cutting 6+ hour simulations to seconds. Co-inventor on 10+ semiconductor modeling patents.
-- Founded and led development of a C++ image analysis simulation package rivaling key legacy semiconductor products.
+- Patented a physics-based analytical metal-oxide resist model predicting EUV lithography printing, cutting 6+ hour semiconductor simulations to seconds. Co-inventor on 10+ related modeling patents.
+- Founded and led development of a C++ image analysis simulation package, delivering an industry-competitive simulation product.
 
 ---
 
 ## Education
 
 - **Ph.D. in Chemistry** | MIT *(2014 – 2019)*
-  - Semiconductor and magnetic nanocrystal research in the Bawendi group (advisor awarded 2023 Nobel Prize).
+  - Semiconductor and magnetic nanocrystal research in the Bawendi Group (advisor Moungi Bawendi awarded the 2023 Nobel Prize in Chemistry).
 - **B.S. in Chemistry & Mathematics** | University of Arizona *(2010 – 2014)*
 
 ---
