@@ -100,6 +100,14 @@ body[data-terminal="page"] {
     display: none;
 }
 
+/* iOS Safari auto-zooms when a focused field is < 16px, which yanks the page
+   into a corner. Keep the page-mode input/editor at 16px to prevent that. */
+.term-panel.term-page .term-inputrow,
+.term-panel.term-page .term-input,
+.term-panel.term-page .term-nano-area {
+    font-size: 16px;
+}
+
 /* "‹ site" link back to the main page, shown in the page-mode status bar */
 .term-back {
     color: var(--term-status-fg);
@@ -348,6 +356,17 @@ body[data-terminal="page"] {
     margin-right: 0.35rem;
 }
 
+/* Tappable shortcuts (^O / ^X) — larger hit area, pointer cursor for touch */
+.term-nano-key.tap {
+    cursor: pointer;
+    padding: 0.35rem 0.2rem;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.term-nano-key.tap:active b {
+    background: var(--term-green);
+}
+
 /* ==========================================================================
    MARKDOWN RENDERING — shared by the in-terminal `cat` and the view.html page.
    ========================================================================== */
@@ -479,6 +498,12 @@ body[data-terminal="page"] {
 
 .term-screen .markdown-body> :first-child {
     margin-top: 0;
+}
+
+/* Long links/code in rendered output must wrap, not push the view sideways. */
+.term-screen .markdown-body a,
+.term-screen .markdown-body code {
+    overflow-wrap: anywhere;
 }
 
 .term-screen .markdown-body h1,

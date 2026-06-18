@@ -87,9 +87,17 @@
     nanoArea.setAttribute("spellcheck", "false");
     var nanoMsg = el("div", "term-nano-msg");
     var nanoKeys = el("div", "term-nano-keys");
-    nanoKeys.innerHTML =
-        '<span><b>^O</b>Write Out</span><span><b>^X</b>Exit</span>' +
-        '<span><b>^K</b>Cut Line</span><span><b>^G</b>Help</span>';
+    // ^O/^X are tappable so the editor is usable on touch devices (no Ctrl key).
+    function nanoKey(combo, label, handler) {
+        var s = el("span", "term-nano-key" + (handler ? " tap" : ""));
+        s.innerHTML = "<b>" + combo + "</b>" + label;
+        if (handler) s.addEventListener("click", function (e) { e.preventDefault(); handler(); });
+        return s;
+    }
+    nanoKeys.appendChild(nanoKey("^O", "Write Out", function () { saveNano(); }));
+    nanoKeys.appendChild(nanoKey("^X", "Exit", function () { closeNano(); }));
+    nanoKeys.appendChild(nanoKey("^K", "Cut Line", null));
+    nanoKeys.appendChild(nanoKey("^G", "Help", null));
     nano.appendChild(nanoTop);
     nano.appendChild(nanoArea);
     nano.appendChild(nanoMsg);
@@ -405,17 +413,25 @@
     function openNano(arg) {
         var segs = resolve(arg);
         var node = nodeAt(segs);
+        if (node && node.type === "dir") { print("nano: " + arg + ": Is a directory", "term-err"); return; }
         var inPosts = segs.length >= 4 && segs[0] === "home" && segs[1] === "eric" && segs[2] === "posts";
         var writable = !!(inPosts && state.user === "root" && state.token &&
             state.backend && state.backend.backend && state.backend.writes_enabled);
-        var name = segs[segs.length - 1];
 
-        nanoCtx = { name: name, postName: name, writable: writable };
-        nanoTop.textContent = "GNU nano  —  " + name + (writable ? "" : "  (read-only)");
-        nanoArea.readOnly = !writable;
-        nanoMsg.textContent = writable
-            ? "Editing as root. ^O to write into /posts, ^X to exit."
-            : (inPosts ? "Read-only: log in as root to write here." : "Read-only: this path is not writable.");
+        // A read-only editor can't save and traps touch users (no Ctrl key to
+        // ^X out), so when editing isn't possible just show the file via `cat`.
+        if (!writable) {
+            print("nano: read-only here — showing with cat. " +
+                (inPosts ? "Log in as root to edit." : "Editing requires the C++ backend."),
+                "term-muted");
+            return COMMANDS.cat([arg]);
+        }
+
+        var name = segs[segs.length - 1];
+        nanoCtx = { name: name, postName: name, writable: true };
+        nanoTop.textContent = "GNU nano  —  " + name;
+        nanoArea.readOnly = false;
+        nanoMsg.textContent = "Editing as root. ^O (or tap Write Out) to save, ^X (or tap Exit) to leave.";
 
         var done = function (text) {
             nanoArea.value = text || "";
