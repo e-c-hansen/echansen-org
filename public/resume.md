@@ -25,8 +25,8 @@ Research Engineer with 5+ years of experience with LLMs, scoring/retrieval model
 
 ### **Engineer** | Lam Research
 *January 2020 – June 2022*
-- Patented a physics-based analytical metal-oxide resist model predicting EUV lithography printing, cutting 6+ hour semiconductor simulations to seconds. Co-inventor on 10+ related modeling patents.
-- Founded and led development of a C++ image analysis simulation package, delivering an industry-competitive simulation product.
+- Founded and led development of predictive patterning software, used for research and productionization. Built on a physics-based, first principles model, reducing EUV lithography printing simulation times from 6+ hours to seconds. Published this work in a relevant journal for the field (SPIE).
+- Founded and led development of analysis software for lithographic patterning, competitive with proprietary, industry-standard tools.
 
 ---
 
