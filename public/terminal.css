@@ -76,6 +76,40 @@ html.term-kbd-open body {
     background-color: var(--term-bg);
 }
 
+/* ---- Dedicated full-screen terminal page (mobile + /terminal.html) ----
+   No overlay, no slide-up, no backdrop: the whole page IS the terminal on a
+   dark body, so there's nothing light to fight or peek through. */
+body[data-terminal="page"] {
+    background: var(--term-bg);
+    overflow: hidden;
+}
+
+.term-panel.term-page {
+    position: fixed;
+    inset: 0;
+    height: 100%;
+    max-height: none;
+    transform: none;
+    transition: none;
+    box-shadow: none;
+    border-top: none;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.term-panel.term-page .term-resize {
+    display: none;
+}
+
+/* "‹ site" link back to the main page, shown in the page-mode status bar */
+.term-back {
+    color: var(--term-status-fg);
+    text-decoration: none;
+    font-weight: 700;
+    background: rgba(0, 0, 0, 0.22);
+    padding: 0 0.5rem;
+    border-radius: 2px;
+}
+
 /* ---- The terminal panel itself ---- */
 .term-panel {
     position: fixed;

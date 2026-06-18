@@ -14,6 +14,16 @@
     var HOME = "/home/eric";
     var HOST = "echansen";
 
+    // Rendering mode:
+    //  - PAGE_MODE: dedicated full-screen terminal (terminal.html, used on mobile)
+    //  - IS_MOBILE (overlay pages): the slide-up bar just links to terminal.html
+    //  - otherwise: the desktop slide-up overlay
+    var PAGE_MODE = !!(document.body && document.body.getAttribute("data-terminal") === "page");
+    var IS_MOBILE = !PAGE_MODE && (
+        (window.matchMedia && window.matchMedia("(pointer: coarse)").matches) ||
+        window.innerWidth <= 760
+    );
+
     var state = {
         cwd: HOME.split("/").filter(Boolean), // path segments, e.g. ["home","eric"]
         root: null,                            // VFS root node (from fs.json)
@@ -42,8 +52,9 @@
 
     // ---- build the UI -------------------------------------------------------
     var bar = el("div", "term-bar");
+    var barLabel = el("span", null, "pull up for a shell");
     bar.appendChild(el("span", "term-bar-grip", "▲ ▲ ▲"));
-    bar.appendChild(el("span", null, "pull up for a shell"));
+    bar.appendChild(barLabel);
     bar.appendChild(el("span", "term-bar-grip", "▲ ▲ ▲"));
 
     var panel = el("div", "term-panel");
@@ -96,9 +107,16 @@
     var backdrop = el("div", "term-backdrop");
 
     function mount() {
-        document.body.appendChild(backdrop);
-        document.body.appendChild(bar);
-        document.body.appendChild(panel);
+        if (PAGE_MODE) {
+            panel.classList.add("term-page");
+            document.body.appendChild(panel);
+        } else if (IS_MOBILE) {
+            document.body.appendChild(bar); // taps through to terminal.html
+        } else {
+            document.body.appendChild(backdrop);
+            document.body.appendChild(bar);
+            document.body.appendChild(panel);
+        }
     }
     if (document.body) mount();
     else document.addEventListener("DOMContentLoaded", mount);
@@ -245,7 +263,7 @@
 
         clear: function () { screen.innerHTML = ""; },
 
-        exit: function () { closePanel(); },
+        exit: function () { if (PAGE_MODE) location.href = "/"; else closePanel(); },
 
         neofetch: function () {
             var host = state.backend && state.backend.backend
@@ -674,9 +692,6 @@
         handle.addEventListener("pointerup", up);
         handle.addEventListener("pointercancel", up);
     }
-    bindDrag(bar, { openOnGrab: true });
-    bindDrag(resize, { openOnGrab: false });
-
     // Clicking/tapping anywhere in the scrollback (re)focuses the prompt,
     // unless the user is selecting text or the nano overlay is up.
     screen.addEventListener("click", function () {
@@ -686,16 +701,14 @@
         focusInput();
     });
 
-    // Global shortcuts
+    // Keyboard shortcuts + "just start typing" safety net.
     document.addEventListener("keydown", function (e) {
-        if (e.key === "`" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); togglePanel(); return; }
-        if (e.key === "Escape" && panel.classList.contains("open")) {
+        if (!PAGE_MODE && e.key === "`" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); togglePanel(); return; }
+        if (!PAGE_MODE && e.key === "Escape" && panel.classList.contains("open")) {
             if (nano.classList.contains("open")) closeNano();
             else closePanel();
             return;
         }
-        // Safety net: if the terminal is open but the prompt isn't focused,
-        // redirect keystrokes to it so the user can "just start typing".
         if (!panel.classList.contains("open")) return;
         if (nano.classList.contains("open")) return;
         if (document.activeElement === input) return;
@@ -709,28 +722,77 @@
             focusInput();
         }
     });
-    window.addEventListener("resize", function () {
-        if (panel.classList.contains("open")) setHeight(state.panelHeight);
-    });
-    // Track the on-screen keyboard (mobile) so the prompt is never covered.
-    if (window.visualViewport) {
-        window.visualViewport.addEventListener("resize", syncKeyboard);
-        window.visualViewport.addEventListener("scroll", syncKeyboard);
+
+    // ---- mode-specific setup ------------------------------------------------
+    function initOverlay() {
+        bindDrag(bar, { openOnGrab: true });
+        bindDrag(resize, { openOnGrab: false });
+        window.addEventListener("resize", function () {
+            if (panel.classList.contains("open")) setHeight(state.panelHeight);
+        });
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener("resize", syncKeyboard);
+            window.visualViewport.addEventListener("scroll", syncKeyboard);
+        }
     }
 
+    function initMobileBar() {
+        // The slide-up overlay fights the on-screen keyboard on touch devices, so
+        // the bar simply opens the dedicated full-screen terminal page instead.
+        barLabel.textContent = "tap for a shell";
+        bar.style.cursor = "pointer";
+        bar.addEventListener("click", function () { location.href = "terminal.html"; });
+    }
+
+    // Size the full-screen page terminal to the visible viewport so the prompt
+    // stays above the keyboard; the dark <body> covers everything behind it.
+    function sizePage() {
+        var vv = window.visualViewport;
+        if (!vv) return;
+        panel.style.top = vv.offsetTop + "px";
+        panel.style.height = vv.height + "px";
+        screen.scrollTop = screen.scrollHeight;
+    }
+
+    function initPageMode() {
+        panel.classList.add("open");
+        state.opened = true;
+        var back = el("a", "term-back", "‹ site");
+        back.setAttribute("href", "/");
+        statusLeft.insertBefore(back, statusLeft.firstChild);
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener("resize", sizePage);
+            window.visualViewport.addEventListener("scroll", sizePage);
+        }
+        window.addEventListener("resize", sizePage);
+        sizePage();
+    }
+
+    if (PAGE_MODE) initPageMode();
+    else if (IS_MOBILE) initMobileBar();
+    else initOverlay();
+
     // ---- boot ---------------------------------------------------------------
-    Promise.all([
-        fetch("fs.json").then(function (r) { return r.json(); }).then(function (data) {
-            state.root = data.tree;
-            if (data.cwd) state.cwd = data.cwd.split("/").filter(Boolean);
-        }).catch(function () {
-            state.root = { name: "/", type: "dir", children: [] };
-        }),
-        detectBackend()
-    ]).then(function () {
-        refreshPS1();
-        updateStatusClock();
-    });
+    // The mobile bar is just a link, so it doesn't need the filesystem/backend.
+    if (PAGE_MODE || !IS_MOBILE) {
+        Promise.all([
+            fetch("fs.json").then(function (r) { return r.json(); }).then(function (data) {
+                state.root = data.tree;
+                if (data.cwd) state.cwd = data.cwd.split("/").filter(Boolean);
+            }).catch(function () {
+                state.root = { name: "/", type: "dir", children: [] };
+            }),
+            detectBackend()
+        ]).then(function () {
+            refreshPS1();
+            updateStatusClock();
+            if (PAGE_MODE) {
+                if (!screen.childElementCount) banner();
+                sizePage();
+                focusInput();
+            }
+        });
+    }
 
     function updateStatusClock() {
         var d = new Date();
