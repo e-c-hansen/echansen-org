@@ -14,8 +14,8 @@ The backend is built in **modern, multithreaded C++17** using raw POSIX sockets 
   - Custom Host header subdomain router.
   - Dynamic plain-text / JSON generator for terminal integrations.
 - **Portfolio Frontend**: Pure, semantic HTML5 and sleek modern CSS.
-  - Premium glassmorphic dark-mode interface utilizing Google Fonts (Inter) and HSL colors.
-  - Custom-crafted SVG social/contact icons.
+  - Editorial, serif-led interface using a warm paper palette and restrained accents.
+  - Custom SVG favicon and inline navigation icons.
   - Responsive layout adjusting perfectly to mobile, tablet, and 4K displays.
   - **Print Stylesheet**: `@media print` layout formatting that automatically compresses spacing and reflows elements into a gorgeous, clean, **standard 1-page paper/PDF resume** when printed or saved.
 - **Subdomain API Helpers**: Terminal-friendly plain-text/JSON endpoints mapping to a DNS subdomain.
@@ -34,16 +34,15 @@ The backend is built in **modern, multithreaded C++17** using raw POSIX sockets 
 ├── assets/
 │   └── resume.tex        # Original LaTeX resume source (reference)
 └── public/               # Static web dir — served identically by C++ or Pages
-    ├── index.html        # Landing page (+ hidden terminal hooks)
+    ├── index.html        # Landing page
     ├── resume.html       # Experience & skills
     ├── github.html       # Code & systems
     ├── view.html         # Generic Markdown -> HTML viewer (?f=/posts/x.md)
     ├── style.css         # Core design system
-    ├── terminal.css      # Hidden-terminal + Markdown rendering styles
-    ├── terminal.js       # The simulated tmux-style shell (client-side)
-    ├── fs.json           # Virtual filesystem manifest for the terminal
+    ├── favicon.svg       # Source for the site monogram favicon
+    ├── favicon.ico       # Multi-size legacy browser fallback
+    ├── apple-touch-icon.png
     ├── resume.md         # Plain-text resume (also the curl / endpoint)
-    ├── content/          # Markdown surfaced inside the terminal (about, etc.)
     ├── posts/            # Root-writable Markdown posts (live dir)
     └── vendor/
         └── marked.min.js # Vendored Markdown parser (MIT)
@@ -58,11 +57,10 @@ ways without modification:
 
 1. **Local / Raspberry Pi (dynamic):** the C++ binary serves `public/` and adds
    the live curl utility endpoints (`/quote`, `/uuid`, `/stats`, …) and the
-   root-write terminal API (`/api/term/*`).
+   authenticated Markdown publishing API (`/api/term/*`).
 2. **GitHub Pages (static):** `.github/workflows/pages.yml` publishes `public/`
-   on every push to `main`. The hidden terminal still works (it is entirely
-   client-side); the dynamic backend endpoints simply 404, and the terminal
-   detects their absence and runs read-only.
+   on every push to `main`. The dynamic backend endpoints are not available in
+   this mode.
 
 To enable Pages: in the repo settings, set **Pages → Build and deployment →
 Source = GitHub Actions**. The included workflow handles the rest. (`public/.nojekyll`
@@ -70,32 +68,12 @@ keeps GitHub from running Jekyll over the files.)
 
 ---
 
-## 🖥️ The Hidden Terminal
+## 📝 Authenticated Markdown publishing
 
-Every page carries a slim bar pinned to the bottom of the viewport. **Drag it up**
-(or click it, or press <kbd>Ctrl</kbd>+<kbd>`</kbd>) to reveal a tmux-style shell.
-It is a *simulation* — no commands execute on any server. It navigates a virtual
-filesystem described by [`public/fs.json`](public/fs.json):
-
-| command        | behaviour                                              |
-| -------------- | ----------------------------------------------------- |
-| `ls [-h] [-a]` | list the current directory (`-h` = long/detailed)     |
-| `cd <dir>`     | change directory (`cd ..`, `cd ~`, `cd /www`)         |
-| `cat [-r] <f>` | print a file; Markdown is rendered (`-r` = raw text)  |
-| `nano <file>`  | open the editor overlay (read-only unless root)       |
-| `pwd` `whoami` | location / current user                               |
-| `login` `su`   | authenticate as root (backend only)                   |
-| `help` `clear` `exit` `neofetch` `echo` | the usual                    |
-
-Markdown is rendered to HTML by the vendored [`marked`](https://github.com/markedjs/marked)
-library — both inside `cat` and on the standalone viewer page
-`view.html?f=/posts/<name>.md`.
-
-### Root mode — adding posts
-
-Item (3): a password- and IP-gated `root` user who can create Markdown posts via
-`nano`. This requires the **C++ backend** (it persists files and checks the
-source IP), so it is automatically disabled on static GitHub Pages.
+The C++ backend exposes an optional password- and IP-gated API for publishing
+Markdown posts. The standalone viewer renders them at
+`view.html?f=/posts/<name>.md`. Because this feature persists files and checks
+the source IP, it is not available on static GitHub Pages.
 
 Enable it by giving the server both a password and a source-IP allowlist — via
 flags or environment variables:
@@ -109,17 +87,9 @@ flags or environment variables:
 ROOT_PASSWORD='…' ROOT_ALLOWED_IPS='127.0.0.1' ./server
 ```
 
-Then, from the terminal on the live site:
-
-```
-login              # prompts for the password (authorized IPs only)
-nano hello.md      # write some Markdown
-^O                 # writes to public/posts/hello.md
-^X                 # exit the editor
-```
-
-The new post is immediately viewable at `/view.html?f=/posts/hello.md` and shows
-up under `~/posts` in the shell.
+Clients authenticate through `POST /api/term/login`, then send Markdown to
+`POST /api/term/write` with the returned bearer token and an `X-File-Name`
+header. Published posts are immediately viewable through `view.html`.
 
 **Security model & caveats:**
 

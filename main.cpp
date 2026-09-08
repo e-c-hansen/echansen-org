@@ -35,11 +35,11 @@ std::mutex log_mutex;
 std::string serve_port = "8080";
 std::string serve_dir = "./public";
 
-// ---- Root-write terminal configuration ----------------------------------
-// The hidden in-browser terminal can let an authenticated "root" user create
-// Markdown posts. This is intentionally gated behind BOTH a shared password
-// and a source-IP allowlist, and is only active when the C++ backend serves
-// the site (it is inert on static hosts like GitHub Pages).
+// ---- Authenticated publishing configuration ------------------------------
+// The publishing API can let an authenticated user create Markdown posts.
+// This is intentionally gated behind BOTH a shared password and a source-IP
+// allowlist, and is only active when the C++ backend serves the site (it is
+// inert on static hosts like GitHub Pages).
 std::string root_password = "";              // empty => writes fully disabled
 std::vector<std::string> root_allowed_ips;   // empty => no host may write
 const std::string posts_subdir = "posts";    // writable dir, under serve_dir
@@ -217,7 +217,7 @@ void send_error(int client_fd, int status_code, const std::string &status_text,
   write(client_fd, response.c_str(), response.size());
 }
 
-// Send a minimal response with explicit content type (used by the terminal API)
+// Send a minimal response with explicit content type (used by the publishing API)
 void send_simple(int client_fd, int status_code, const std::string &status_text,
                  const std::string &content_type, const std::string &body) {
   std::stringstream ss;
@@ -293,12 +293,12 @@ std::string header_val(const std::map<std::string, std::string> &headers,
   return it == headers.end() ? std::string() : it->second;
 }
 
-// Hidden-terminal / root-write API. Handles its own HTTP methods and writes the
-// full response. Returns the HTTP status code (for logging).
-int handle_terminal_api(int client_fd, const std::string &method,
-                        const std::string &subpath, const std::string &real_ip,
-                        const std::map<std::string, std::string> &headers,
-                        const std::string &body) {
+// Authenticated Markdown publishing API. Handles its own HTTP methods and
+// writes the full response. Returns the HTTP status code (for logging).
+int handle_publishing_api(int client_fd, const std::string &method,
+                          const std::string &subpath, const std::string &real_ip,
+                          const std::map<std::string, std::string> &headers,
+                          const std::string &body) {
   const std::string json_ct = "application/json; charset=utf-8";
 
   // GET /api/term/info  -> capabilities for the current caller
@@ -400,7 +400,7 @@ int handle_terminal_api(int client_fd, const std::string &method,
   }
 
   send_simple(client_fd, 404, "Not Found", json_ct,
-              "{\"error\":\"unknown terminal endpoint\"}");
+              "{\"error\":\"unknown publishing endpoint\"}");
   return 404;
 }
 
@@ -512,14 +512,14 @@ void handle_client(int client_fd, std::string client_ip) {
   // Standard tracking stats
   int status_code = 200;
 
-  // ---- Hidden terminal / root-write API (handles its own HTTP methods) ----
+  // ---- Markdown publishing API (handles its own HTTP methods) ----
   if (path.rfind("/api/term", 0) == 0) {
     std::string subpath = path.substr(9); // strip "/api/term"
     if (subpath.empty()) {
       subpath = "/";
     }
-    status_code = handle_terminal_api(client_fd, method, subpath, real_ip,
-                                      headers, body);
+    status_code = handle_publishing_api(client_fd, method, subpath, real_ip,
+                                        headers, body);
     auto end_time = std::chrono::high_resolution_clock::now();
     double elapsed =
         std::chrono::duration<double, std::milli>(end_time - start_time).count();
@@ -741,7 +741,7 @@ int main(int argc, char *argv[]) {
                    " [--root-pass PASS] [--root-ips ip1,ip2]\n"
                 << "Default port: 8080\n"
                 << "Default directory: ./public\n"
-                << "Root writes (hidden terminal) are enabled only when both a\n"
+                << "Markdown publishing is enabled only when both a\n"
                 << "password and an IP allowlist are configured (flags or the\n"
                 << "ROOT_PASSWORD / ROOT_ALLOWED_IPS environment variables)."
                 << std::endl;
@@ -809,15 +809,15 @@ int main(int argc, char *argv[]) {
   std::cout << "[SYSTEM] Listening on port: \033[1;34m" << serve_port
             << "\033[0m" << std::endl;
 
-  // Report the root-write (hidden terminal) status.
+  // Report the Markdown publishing status.
   if (!root_password.empty() && !root_allowed_ips.empty()) {
     std::stringstream ips;
     for (size_t i = 0; i < root_allowed_ips.size(); ++i)
       ips << (i ? ", " : "") << root_allowed_ips[i];
-    std::cout << "[SYSTEM] Root terminal writes: \033[1;32mENABLED\033[0m "
+    std::cout << "[SYSTEM] Markdown publishing: \033[1;32mENABLED\033[0m "
               << "(allowlist: " << ips.str() << ")" << std::endl;
   } else {
-    std::cout << "[SYSTEM] Root terminal writes: \033[1;33mdisabled\033[0m "
+    std::cout << "[SYSTEM] Markdown publishing: \033[1;33mdisabled\033[0m "
               << "(set --root-pass and --root-ips to enable)" << std::endl;
   }
 
