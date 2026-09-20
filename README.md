@@ -8,14 +8,11 @@ published to GitHub Pages. No build step, no framework, no dependencies.
 ```
 ├── .github/workflows/
 │   └── pages.yml       # Publishes public/ to GitHub Pages on every push to main
-├── assets/
-│   └── resume.tex      # Original LaTeX resume source (reference only, not published)
 └── public/             # Everything that gets served
     ├── index.html      # Landing page
     ├── resume.html     # Experience & skills
     ├── github.html     # Code & systems
     ├── style.css       # The whole design system, including the print stylesheet
-    ├── resume.md       # Plain-text resume
     ├── favicon.svg     # Source for the site monogram
     ├── favicon.ico     # Multi-size legacy fallback
     ├── apple-touch-icon.png
@@ -38,5 +35,14 @@ Then open http://localhost:8080.
 Push to `main`. The workflow uploads `public/` and deploys it. Pages must be
 set to **Settings → Pages → Source = GitHub Actions**.
 
-`resume.html` carries an `@media print` layout that reflows the page into a
-clean one-page PDF when printed — worth re-checking after any resume edit.
+## The resume
+
+`resume.html` is the only copy of the resume; a plain-text `resume.md` and a
+LaTeX source both used to exist alongside it and had drifted apart from it.
+
+Its `@media print` block reflows the page into a one-page letter PDF: it hides
+the back-link, subtitle and footer, reveals a name/contact line that only makes
+sense on paper, and tightens the type. **It fits on one page with roughly an
+inch to spare, so a couple of new bullets are fine but a new section is not.**
+Re-check after editing by printing to PDF (Cmd-P → Save as PDF) and confirming
+it is still one page.

@@ -35,7 +35,19 @@
         <header class="page-header">
             <h1 class="page-title">Experience &amp; Skills</h1>
             <p class="page-subtitle">A brief overview of my professional trajectory and core capabilities.</p>
+            <!-- Printed-only identity block: the screen version is reached from index.html,
+                 but a PDF of this page has to stand on its own. -->
+            <p class="print-identity">Eric Hansen &middot; Brooklyn, NY 11215 &middot;
+                eric.calvin.hansen@gmail.com &middot; +1-480-298-2839</p>
         </header>
+
+        <!-- OVERALL -->
+        <section class="section">
+            <h2 class="section-title">Overall</h2>
+            <p class="page-intro">Research Engineer with 5+ years of experience with LLMs, scoring/retrieval models,
+                and ML infrastructure. I have worked on most relevant facets of ML at scale, from pretraining LLMs to
+                building petabyte-scale data pipelines. I am broadly interested in solving complex problems with ML.</p>
+        </section>
 
         <!-- WORK EXPERIENCE -->
         <section class="section">
@@ -46,12 +58,12 @@
                 <div class="timeline-item">
                     <div class="timeline-marker"></div>
                     <div class="timeline-header">
-                        <h3 class="job-title">Senior Research Engineer<span class="job-company">@ Google DeepMind</span>
+                        <h3 class="job-title">Senior Research Engineer <span class="job-company">@ Google DeepMind</span>
                         </h3>
                         <span class="job-date">Nov 2025 – Present</span>
                     </div>
                     <ul class="job-bullets">
-                        <li>Adversarial robustness in post-training. Breaking stuff so you can't.</li>
+                        <li>Adversarial post-training of agentic Gemini workflows.</li>
                     </ul>
                 </div>
 
@@ -64,12 +76,13 @@
                         <span class="job-date">Jul 2022 – Nov 2025</span>
                     </div>
                     <ul class="job-bullets">
-                        <li>Pretrained and fine-tuned large language models powering the "AI Overviews" feature in core
-                            search queries.</li>
-                        <li>Developed a highly optimized, regulation-compliant petabyte-scale search data store feeding
-                            deep ranking models.</li>
-                        <li>Built end-to-end model training, data generation, and automatic evaluation pipelines,
-                            shrinking model refresh cycles from 6-12 months to monthly.</li>
+                        <li>Pretrained and fine-tuned LLMs for the “AI Overviews” feature, achieving
+                            state-of-the-art performance by improving tokenization and training data mixtures.</li>
+                        <li>Engineered a regulation-compliant, petabyte-scale data store and pipeline, feeding the most
+                            active ML models in Google Search and supporting nearly 100% of all searches.</li>
+                        <li>Built an automated end-to-end pipeline for data generation, training, and evaluation for a
+                            critical Search Ranking model, reducing model refresh cycles from 6–12 months to monthly.
+                        </li>
                     </ul>
                 </div>
 
@@ -82,14 +95,13 @@
                         <span class="job-date">Jan 2020 – Jun 2022</span>
                     </div>
                     <ul class="job-bullets">
-                        <li>Founded and led development of predictive patterning software, used for research and
-                            productionization. Built on a physics-based, first principles model, reducing EUV
-                            lithography
-                            printing simulation times from 6+ hours to seconds. Published this work in a relevant
-                            journal for the
-                            field (SPIE).</li>
-                        <li>Founded and led development of analysis software for lithographic patterning, competitive
-                            with proprietary, industry-standard tools.</li>
+                        <li>Invented and patented a physics-based analytical model for predicting EUV lithography
+                            “printing” (<a
+                                href="https://www.spiedigitallibrary.org/journals/journal-of-micro-nanopatterning-materials-and-metrology/volume-21/issue-4/041405/Analytical-approach-to-metal-oxide-resist-modeling--exposure-bake/10.1117/1.JMM.21.4.041405.short"
+                                target="_blank" rel="noopener noreferrer">paper</a>), reducing 6+ hour simulations to
+                            seconds. <em>10+ related patents.</em></li>
+                        <li>Founded and led development of that simulation product, including a state-of-the-art image
+                            analysis package that rivaled competitor offerings.</li>
                     </ul>
                 </div>
 
@@ -104,11 +116,15 @@
                 <div class="education-item">
                     <div class="edu-header">
                         <h3 class="edu-degree">Ph.D. in Chemistry</h3>
-                        <span class="edu-date">2014 – 2019</span>
+                        <span class="edu-date">Aug 2014 – Dec 2019</span>
                     </div>
                     <span class="edu-school">Massachusetts Institute of Technology</span>
-                    <p class="edu-desc">Semiconductor and magnetic nanocrystal research in the Bawendi Group (advisor
-                        Moungi Bawendi awarded the 2023 Nobel Prize in Chemistry).</p>
+                    <p class="edu-desc">Semiconductor and magnetic nanocrystal research &mdash; <a
+                            href="https://scholar.google.com/citations?user=jq4WE7IAAAAJ" target="_blank"
+                            rel="noopener noreferrer">Google Scholar</a>.</p>
+                    <p class="edu-note">Research from before my time earned my advisor the <a
+                            href="https://www.nobelprize.org/prizes/chemistry/2023/bawendi/facts/" target="_blank"
+                            rel="noopener noreferrer">2023 Nobel Prize in Chemistry</a>.</p>
                 </div>
 
                 <div class="education-item">
@@ -137,18 +153,27 @@
                         <span class="tag-badge">SQL</span>
                         <span class="tag-badge">Bash</span>
                     </div>
-                    <p class="category-note">* <span>R</span> indicates formal Google "Readability" credential.</p>
+                    <p class="category-note">* <span>R</span> indicates formal Google “Readability” credential.</p>
                 </div>
 
                 <div class="skills-category">
-                    <h4 class="category-name">Frameworks &amp; Systems</h4>
+                    <h4 class="category-name">ML &amp; Data Science</h4>
                     <div class="tags-list">
                         <span class="tag-badge">JAX</span>
                         <span class="tag-badge">Flax</span>
                         <span class="tag-badge">PyTorch</span>
-                        <span class="tag-badge">LibTorch</span>
+                        <span class="tag-badge" title="C++ PyTorch">LibTorch</span>
                         <span class="tag-badge">TensorFlow</span>
+                        <span class="tag-badge">Pandas</span>
+                        <span class="tag-badge">NumPy</span>
+                    </div>
+                </div>
+
+                <div class="skills-category">
+                    <h4 class="category-name">Distributed Data Pipelines</h4>
+                    <div class="tags-list">
                         <span class="tag-badge">Apache Beam</span>
+                        <span class="tag-badge">Apache Flume</span>
                         <span class="tag-badge">Borg</span>
                     </div>
                 </div>
