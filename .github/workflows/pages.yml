@@ -1,10 +1,6 @@
 name: Deploy static site to GitHub Pages
 
-# Publishes the contents of public/ to GitHub Pages. This is the SAME directory
-# the C++ server serves locally, so the site stays a single source of truth.
-# Dynamic features (the curl utility endpoints and the root-write terminal API)
-# require the C++ backend and are simply inert on Pages — the terminal detects
-# the missing backend and degrades to read-only.
+# Publishes the contents of public/ to GitHub Pages.
 
 on:
   push:
