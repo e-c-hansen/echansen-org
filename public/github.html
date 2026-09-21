@@ -41,8 +41,9 @@
         <section class="section">
             <p class="page-intro">
                 Most of my day-to-day engineering lives in closed-source systems at Google DeepMind and, previously,
-                Google Search. I bootstrap my external work under <a href="https://ible.ai" target="_blank"
-                    rel="noopener noreferrer">ible.ai</a>.
+                Google Search. Most of my public work is published under <a href="https://ible.ai" target="_blank"
+                    rel="noopener noreferrer">ible.ai</a>; the rest is on <a href="https://github.com/e-c-hansen"
+                    target="_blank" rel="noopener noreferrer">my own account</a>.
             </p>
         </section>
 
@@ -51,44 +52,44 @@
             <h2 class="section-title">Selected Repositories</h2>
             <div class="github-grid">
 
-                <a href="https://github.com/ible-ai/graphible" target="_blank" rel="noopener noreferrer"
-                    class="repo-card">
+                <div class="repo-card">
                     <div class="repo-header">
-                        <span class="repo-name">graphible</span>
+                        <a href="https://github.com/ible-ai/adaptible" target="_blank" rel="noopener noreferrer"
+                            class="repo-name">adaptible</a>
+                        <span class="repo-lang">Python</span>
+                    </div>
+                    <p class="repo-desc">
+                        An experiment on self-improvement of a local LLM tasked with repeatedly correcting its own
+                        factual errors. Results showed meaningful test-side wins, but the model's capacity for judging
+                        factuality bottlenecked wins over multi-generation training loops. (<a
+                            href="https://github.com/ible-ai/adaptible/blob/main/results/README.md" target="_blank"
+                            rel="noopener noreferrer">write-up and data</a>).
+                    </p>
+                </div>
+
+                <div class="repo-card">
+                    <div class="repo-header">
+                        <a href="https://github.com/e-c-hansen/minicode" target="_blank" rel="noopener noreferrer"
+                            class="repo-name">minicode</a>
+                        <span class="repo-lang">C++ / Objective-C++</span>
+                    </div>
+                    <p class="repo-desc">
+                        A fast text editor with browser, terminal, LaTeX, and markdown integration.
+                    </p>
+                </div>
+
+                <div class="repo-card">
+                    <div class="repo-header">
+                        <a href="https://github.com/ible-ai/graphible" target="_blank" rel="noopener noreferrer"
+                            class="repo-name">graphible</a>
                         <span class="repo-lang">JavaScript</span>
                     </div>
                     <p class="repo-desc">
-                        Turns any topic into an interactive learning graph: concepts become a navigable web of nodes
-                        that stream in live from a local LLM (Ollama), with feedback loops and saveable state. Live demo
-                        at ible-ai.github.io/graphible.
+                        A graph-based GUI for hosted and local LLMs to interconnect chats and natively steer and
+                        branch from existing nodes. Live at <a href="https://graph.ible.ai" target="_blank"
+                            rel="noopener noreferrer">graph.ible.ai</a>.
                     </p>
-                </a>
-
-                <a href="https://github.com/ible-ai/adaptible" target="_blank" rel="noopener noreferrer"
-                    class="repo-card">
-                    <div class="repo-header">
-                        <span class="repo-name">adaptible</span>
-                        <span class="repo-lang">Python</span>
-                    </div>
-                    <p class="repo-desc">
-                        Wraps an LLM in a server that learns during idle time &mdash; it stores interactions, critiques
-                        and revises its own past answers, and fine-tunes on them with LoRA. An experiment in whether
-                        some instances "learn to learn" better than others.
-                    </p>
-                </a>
-
-                <a href="https://github.com/ible-ai/vizible" target="_blank" rel="noopener noreferrer"
-                    class="repo-card">
-                    <div class="repo-header">
-                        <span class="repo-name">vizible</span>
-                        <span class="repo-lang">Python</span>
-                    </div>
-                    <p class="repo-desc">
-                        Deterministic color-coded debugging for Python: <code>dprint()</code> gives every file-and-line
-                        its own stable color, so you can spot where log output is coming from at a glance. Zero config,
-                        minimal dependencies.
-                    </p>
-                </a>
+                </div>
 
             </div>
         </section>
